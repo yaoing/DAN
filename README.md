@@ -13,7 +13,7 @@
   
 
 ## Training
-We provide the training code for AffectNet ande RAF-DB.  
+We provide the training code for AffectNet and RAF-DB.  
 
 For AffectNet-8 dataset, run:
 ```
