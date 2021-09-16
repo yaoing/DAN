@@ -8,7 +8,7 @@
 ## Preparation
 - Download pre-trained model of [MSCeleb](https://drive.google.com/file/d/1H421M8mosIVt8KsEWQ1UuYMkQS8X1prf/view?usp=sharing) and move the file to `./models`
 - Download [RAF-DB](http://www.whdeng.cn/raf/model1.html) dataset and extract the `AffectNet` dir to `./datasets`
-- Download [AffectNet](http://mohammadmahoor.com/affectnet/) dataset and extract the `raf-basic` dir  to `./dataset` 
+- Download [AffectNet](http://mohammadmahoor.com/affectnet/) dataset and extract the `raf-basic` dir  to `./datasets` 
 - Run `python ./utils/convert_affectnet.py` to store a split version of AffectNet dataset.
   
 
