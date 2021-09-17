@@ -2,7 +2,7 @@
 
 ![overview](./static/overview.png)
 
-
+A PyTorch implementation of the [DAN](https://arxiv.org/pdf/2109.07270.pdf), pre-trained models are available for deployment.
 
 
 ## Preparation
@@ -34,7 +34,7 @@ Pre-trained models can be downloaded for evaluation as following:
 
 |     task    	| epochs 	| accuracy 	| link 	|
 |:-----------:	|:------:	|:--------:	|:----:	|
-| AffectNet-8 	|    5   	| 62.09    	|[download](https://drive.google.com/file/d/1a82MQWPnzIp2bSMhl8WiH3KT-5nkrGHv/view?usp=sharing)      	|
+| AffectNet-8 	|    5   	| 62.09    	|[download](https://drive.google.com/file/d/1uHNADViICyJEjJljv747nfvrGu12kjtu/view?usp=sharing)      	|
 | AffectNet-7 	|    6    	| 65.69     |[download](https://drive.google.com/file/d/1_Z-U7rT5NJ3Vc73aN2ZBmuvCkzUQG4jT/view?usp=sharing)  
 |    RAF-DB   	|   21   	| 89.70    	|[download](https://drive.google.com/file/d/1ASabP5wkLUIh4VQc8CEuZbZyLJEFaTMF/view?usp=sharing)      	|
 
