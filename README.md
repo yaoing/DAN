@@ -38,6 +38,19 @@ Pre-trained models can be downloaded for evaluation as following:
 | AffectNet-7 	|    6    	| 65.69     |[download](https://drive.google.com/file/d/1_Z-U7rT5NJ3Vc73aN2ZBmuvCkzUQG4jT/view?usp=sharing)  
 |    RAF-DB   	|   21   	| 89.70    	|[download](https://drive.google.com/file/d/1ASabP5wkLUIh4VQc8CEuZbZyLJEFaTMF/view?usp=sharing)      	|
 
+## Grad CAM++ Reproduction
+Our  experiment of grad cam++ was based on the package `grad-cam 1.3.1`, which could be pulled by:
+
+```
+pip install grad-cam==1.3.1
+```
+
+Then, run the following code to dump the visual results. (Need to replace several  variables manually.)
+
+```
+python run_grad_cam.py
+ ``` 
+
 
 ## Deployment
 
