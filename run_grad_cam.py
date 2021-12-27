@@ -3,7 +3,6 @@
 to install the pytorch_grad_cam package
 """
 
-import argparse
 import os
 import glob
 import cv2
@@ -28,35 +27,6 @@ from pytorch_grad_cam.utils.image import show_cam_on_image, \
 from networks.dan import ResNet18
 from networks.dacl import resnet18
 
-def get_args():
-    parser = argparse.ArgumentParser()
-    parser.add_argument('--use-cuda', action='store_true', default=False,
-                        help='Use NVIDIA GPU acceleration')
-    parser.add_argument('--image-path', type=str, default='./examples/both.png',
-                        help='Input image path')
-    parser.add_argument('--aug_smooth', action='store_true',
-                        help='Apply test time augmentation to smooth the CAM')
-    parser.add_argument('--eigen_smooth', action='store_true',
-                        help='Reduce noise by taking the first principle componenet'
-                        'of cam_weights*activations')
-    parser.add_argument('--method', type=str, default='gradcam',
-                        choices=['gradcam', 'gradcam++', 
-                                 'scorecam', 'xgradcam',
-                                 'ablationcam', 'eigencam', 
-                                 'eigengradcam', 'layercam'],
-                        help='Can be gradcam/gradcam++/scorecam/xgradcam'
-                             '/ablationcam/eigencam/eigengradcam/layercam')
-
-    args = parser.parse_args()
-    args.use_cuda = args.use_cuda and torch.cuda.is_available()
-    if args.use_cuda:
-        print('Using GPU for acceleration')
-    else:
-        print('Using CPU for computation')
-
-    return args
-
-
 
 class DaclModel(nn.Module):
     def __init__(self):
@@ -73,12 +43,6 @@ class DaclModel(nn.Module):
         return output
 
 if __name__ == '__main__':
-    """ python cam.py -image-path <path_to_image>
-    Example usage of loading an image, and computing:
-        1. CAM
-        2. Guided Back Propagation
-        3. Combining both
-    """
 
     os.makedirs('cam_result', exist_ok=True)
 
