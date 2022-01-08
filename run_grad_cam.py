@@ -1,5 +1,5 @@
 """
-[NOTE] Using comand: "pip install grad-cam==1.3.1"
+[NOTE] Using command: "pip install grad-cam==1.3.1"
 to install the pytorch_grad_cam package
 """
 
@@ -24,7 +24,7 @@ from pytorch_grad_cam.utils.image import show_cam_on_image, \
                                          deprocess_image, \
                                          preprocess_image
 
-from networks.dan import ResNet18
+from networks.dan import DAN
 from networks.dacl import resnet18
 
 
@@ -62,7 +62,7 @@ if __name__ == '__main__':
     # }
 
     ## visualize by DAN model
-    model = ResNet18(pretrained=False,num_head=4)
+    model = DAN(num_class=7, num_head=4)
     checkpoint = torch.load('./checkpoints/epoch21_acc0.897_bacc0.8532.pth')
     model.load_state_dict(checkpoint['model_state_dict'],strict=True) 
     names = {
