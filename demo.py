@@ -25,7 +25,7 @@ class Model():
                                 ])
         self.labels = ['neutral', 'happy', 'sad', 'surprise', 'fear', 'disgust', 'anger', 'contempt']
 
-        self.model = DAN(num_head=4, num_class=8)
+        self.model = DAN(num_head=4, num_class=8, pretrained=False)
         checkpoint = torch.load('./checkpoints/affecnet8_epoch6_acc0.6326.pth',
             map_location=self.device)
         self.model.load_state_dict(checkpoint['model_state_dict'],strict=True)

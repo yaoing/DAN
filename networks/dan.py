@@ -6,13 +6,14 @@ from torchvision import models
 
 
 class DAN(nn.Module):
-    def __init__(self, num_class=7,num_head=4):
+    def __init__(self, num_class=7,num_head=4, pretrained=True):
         super(DAN, self).__init__()
         
-        resnet = models.resnet18(True)
+        resnet = models.resnet18(pretrained)
         
-        checkpoint = torch.load('./models/resnet18_msceleb.pth')
-        resnet.load_state_dict(checkpoint['state_dict'],strict=True)
+        if pretrained:
+            checkpoint = torch.load('./models/resnet18_msceleb.pth')
+            resnet.load_state_dict(checkpoint['state_dict'],strict=True)
 
         self.features = nn.Sequential(*list(resnet.children())[:-2])
         self.num_head = num_head
