@@ -211,7 +211,10 @@ def run_training():
             iter_cnt = 0
             bingo_cnt = 0
             sample_cnt = 0
-            baccs = []
+            
+            ## for calculating balanced accuracy
+            y_true = []
+            y_pred = []
 
             model.eval()
             for (imgs, targets) in val_loader:
@@ -228,23 +231,25 @@ def run_training():
                 bingo_cnt += correct_num.sum().cpu()
                 sample_cnt += out.size(0)
                 
-                baccs.append(balanced_accuracy_score(targets.cpu().numpy(),predicts.cpu().numpy()))
+                y_true.append(targets.cpu().numpy())
+                y_pred.append(targets.cpu().numpy())
+
             running_loss = running_loss/iter_cnt   
             scheduler.step()
 
             acc = bingo_cnt.float()/float(sample_cnt)
             acc = np.around(acc.numpy(),4)
             best_acc = max(acc,best_acc)
+            balanced_acc = np.around(balanced_accuracy_score(y_true, y_pred),4)
 
-            bacc = np.around(np.mean(baccs),4)
-            tqdm.write("[Epoch %d] Validation accuracy:%.4f. bacc:%.4f. Loss:%.3f" % (epoch, acc, bacc, running_loss))
+            tqdm.write("[Epoch %d] Validation accuracy:%.4f. bacc:%.4f. Loss:%.3f" % (epoch, acc, balanced_acc, running_loss))
             tqdm.write("best_acc:" + str(best_acc))
 
             if acc > 0.89 and acc == best_acc:
                 torch.save({'iter': epoch,
                             'model_state_dict': model.state_dict(),
                              'optimizer_state_dict': optimizer.state_dict(),},
-                            os.path.join('checkpoints', "rafdb_epoch"+str(epoch)+"_acc"+str(acc)+"_bacc"+str(bacc)+".pth"))
+                            os.path.join('checkpoints', "rafdb_epoch"+str(epoch)+"_acc"+str(acc)+"_bacc"+str(balanced_acc)+".pth"))
                 tqdm.write('Model saved.')
 
         
