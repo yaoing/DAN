@@ -232,14 +232,17 @@ def run_training():
                 sample_cnt += out.size(0)
                 
                 y_true.append(targets.cpu().numpy())
-                y_pred.append(targets.cpu().numpy())
-
+                y_pred.append(predicts.cpu().numpy())
+        
             running_loss = running_loss/iter_cnt   
             scheduler.step()
 
             acc = bingo_cnt.float()/float(sample_cnt)
             acc = np.around(acc.numpy(),4)
             best_acc = max(acc,best_acc)
+
+            y_true = np.concatenate(y_true)
+            y_pred = np.concatenate(y_pred)
             balanced_acc = np.around(balanced_accuracy_score(y_true, y_pred),4)
 
             tqdm.write("[Epoch %d] Validation accuracy:%.4f. bacc:%.4f. Loss:%.3f" % (epoch, acc, balanced_acc, running_loss))
