@@ -1,4 +1,5 @@
 import os
+import sys
 import glob
 from tqdm import tqdm
 import argparse
@@ -14,6 +15,8 @@ from torchvision import transforms, datasets
 
 from networks.dan import DAN
 
+
+eps = sys.float_info.epsilon
 
 def parse_args():
     parser = argparse.ArgumentParser()
@@ -122,7 +125,8 @@ class PartitionLoss(nn.Module):
 
         if num_head > 1:
             var = x.var(dim=1).mean()
-            loss = torch.log(1+num_head/var)
+            ## add eps to avoid empty var case
+            loss = torch.log(1+num_head/(var+eps))
         else:
             loss = 0
             

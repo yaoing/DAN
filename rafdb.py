@@ -1,4 +1,5 @@
 import os
+import sys
 import warnings
 from tqdm import tqdm
 import argparse
@@ -20,6 +21,8 @@ from networks.dan import DAN
 def warn(*args, **kwargs):
     pass
 warnings.warn = warn
+
+eps = sys.float_info.epsilon
 
 def parse_args():
     parser = argparse.ArgumentParser()
@@ -110,7 +113,8 @@ class PartitionLoss(nn.Module):
 
         if num_head > 1:
             var = x.var(dim=1).mean()
-            loss = torch.log(1+num_head/var)
+            ## add eps to avoid empty var case
+            loss = torch.log(1+num_head/(var+eps))
         else:
             loss = 0
             
