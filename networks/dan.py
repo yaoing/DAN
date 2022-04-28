@@ -24,7 +24,7 @@ class DAN(nn.Module):
         self.bn = nn.BatchNorm1d(num_class)
 
 
-    def forward(self, x, latent):
+    def forward(self, x):
         x = self.features(x)
         heads = []
         for i in range(self.num_head):
@@ -34,9 +34,7 @@ class DAN(nn.Module):
         if heads.size(1)>1:
             heads = F.log_softmax(heads,dim=1)
             
-        latent = self.hh_layer(latent)
-        out = torch.cat([heads.sum(dim=1), latent], dim = 1)
-        out = self.fc(out)
+        out = self.fc(heads.sum(dim=1))
         out = self.bn(out)
    
         return out, x, heads
