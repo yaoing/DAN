@@ -18,6 +18,8 @@ from sklearn.metrics import balanced_accuracy_score
 
 from networks.dan import DAN
 
+import multiprocessing as mp
+
 def warn(*args, **kwargs):
     pass
 warnings.warn = warn
@@ -61,19 +63,30 @@ class RafDataSet(data.Dataset):
             f = f +"_aligned.jpg"
             path = os.path.join(self.raf_path, 'Image/aligned', f)
             self.file_paths.append(path)
+        
+        self.pt_paths = []
+        for f in file_names:
+            f = f.split(".")[0]
+            f = f + ".pt"
+            path2 = os.path.join(self.raf_path, "Image/latent_pt_files/", f)
+            self.pt_paths.append(path2)
 
     def __len__(self):
         return len(self.file_paths)
 
     def __getitem__(self, idx):
         path = self.file_paths[idx]
+        pt_path = self.pt_paths[idx]
         image = Image.open(path).convert('RGB')
         label = self.label[idx]
+
+        latent = torch.load(pt_path)
+        latent = torch.flatten(latent)
 
         if self.transform is not None:
             image = self.transform(image)
         
-        return image, label
+        return image, latent, label
 
 class AffinityLoss(nn.Module):
     def __init__(self, device, num_class=8, feat_dim=512):
@@ -187,14 +200,14 @@ def run_training():
         iter_cnt = 0
         model.train()
 
-        for (imgs, targets) in train_loader:
+        for (imgs, latent, targets) in train_loader:
             iter_cnt += 1
             optimizer.zero_grad()
 
             imgs = imgs.to(device)
             targets = targets.to(device)
             
-            out,feat,heads = model(imgs)
+            out,feat,heads = model(imgs, latent)
 
             loss = criterion_cls(out,targets) + 1* criterion_af(feat,targets) + 1*criterion_pt(heads)  #89.3 89.4
 
@@ -221,11 +234,11 @@ def run_training():
             y_pred = []
 
             model.eval()
-            for (imgs, targets) in val_loader:
+            for (imgs, latent, targets) in val_loader:
                 imgs = imgs.to(device)
                 targets = targets.to(device)
                 
-                out,feat,heads = model(imgs)
+                out,feat,heads = model(imgs,latent)
                 loss = criterion_cls(out,targets) + criterion_af(feat,targets) + criterion_pt(heads)
 
                 running_loss += loss
