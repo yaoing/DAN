@@ -12,6 +12,6 @@ for i in range(8):
 for i,row in df.iterrows():
     p = row['phase']
     l = row['label']
-    copy(row['img_path'], f'./dataset/AffectNet/{p}/{l}')
+    copy(row['img_path'], f'./datasets/AffectNet/{p}/{l}')
 
 print('convert done.')
